@@ -1,0 +1,629 @@
+
+Public
+ENVIRONMENT
+No Environment
+LAYOUT
+Double Column
+LANGUAGE
+cURL - cURL
+Lector Web Service - Cursos
+Introduction
+POST
+Listagem de treinamentos
+POST
+Criar novo treinamento
+GET
+Listagem de turmas de um treinamento
+POST
+Matricular um usuário em um treinamento
+POST
+Matrículas de um treinamento
+GET
+Obtenção da imagem do certificado
+GET
+Obtenção das categorias de treinamentos
+GET
+Gerar certificado PDF
+POST
+Criar evento ao vivo
+POST
+Inserir classe/turma em um curso
+POST
+Atualizar classe/turma
+GET
+Buscar lista de presença
+POST
+Buscar histórico dos cursos
+GET
+Gerar token de autenticação
+GET
+Duplicar treinamento
+POST
+Relatório de matrículas
+Lector Web Service - Cursos
+API para manipulação de treinamentos e inscrições.
+
+POST
+Listagem de treinamentos
+https://hml.lector.live/lector-web-service/courses/model/fromAccount/{accountId}
+Obtém a lista de treinamentos do portal solicitado.
+
+AUTHORIZATION
+Bearer Token
+Token
+<token>
+
+HEADERS
+Content-Type
+application/json
+
+Body
+raw (json)
+View More
+json
+{
+	"categoryId": 0,				// Opcional - Código de identificação da categoria solicitada
+	"offset": 0,					// Índice do primeiro treinamento a ser listado
+	"limit": 10,					// Número de treinamentos a serem obtidos
+	"search": "All content",		// Opcional - Parte do texto do título do treinamento procurado
+	"startDateFilter": 0,			// Opcional - Data mínima de publicação do treinamento expressa em milissegundos desde 01/01/1970 UTC
+	"endDateFilter": 10000,			// Opcional - Data máxima de publicação do treinamento expressa em milissegundos desde 01/01/1970 UTC
+	"order": "name",				// Campo que deve ser utilizado para ordenar a lista de treinamentos obtida (name ou date)
+	"asc": true,					// Listar em ordem crescente
+	"subscribedOnly": false,		// Opcional - Listar apenas treinamentos nos quais o usuário está inscrito
+	"interestedOnly": false,		// Opcional - Listar apenas treinamentos nos quais o usuário registrou interesse
+	"waitingOnly": false,			// Opcional - Listar apenas treinamentos nos quais o usuários está aguardando vaga para inscrição
+	"tagsIds": [					// Opcional - Lista de códigos de identificação das tags (funções) procuradas
+		0, 1, ...
+	],
+	"preferredLanguage": "pt_BR"	// Identificação do idioma primário do usuário (pt_BR, en_US ou es_ES)
+	
+}
+Example Request
+Listagem de treinamentos
+View More
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/courses/model/fromAccount/{accountId}' \
+--header 'Content-Type: application/json' \
+--data '{
+	"categoryId": 0,				// Opcional - Código de identificação da categoria solicitada
+	"offset": 0,					// Índice do primeiro treinamento a ser listado
+	"limit": 10,					// Número de treinamentos a serem obtidos
+	"search": "All content",		// Opcional - Parte do texto do título do treinamento procurado
+	"startDateFilter": 0,			// Opcional - Data mínima de publicação do treinamento expressa em milissegundos desde 01/01/1970 UTC
+	"endDateFilter": 10000,			// Opcional - Data máxima de publicação do treinamento expressa em milissegundos desde 01/01/1970 UTC
+	"order": "name",				// Campo que deve ser utilizado para ordenar a lista de treinamentos obtida (name ou date)
+	"asc": true,					// Listar em ordem crescente
+	"subscribedOnly": false,		// Opcional - Listar apenas treinamentos nos quais o usuário está inscrito
+	"interestedOnly": false,		// Opcional - Listar apenas treinamentos nos quais o usuário registrou interesse
+	"waitingOnly": false,			// Opcional - Listar apenas treinamentos nos quais o usuários está aguardando vaga para inscrição
+	"tagsIds": [					// Opcional - Lista de códigos de identificação das tags (funções) procuradas
+		0, 1, ...
+	],
+	"preferredLanguage": "pt_BR"	// Identificação do idioma primário do usuário (pt_BR, en_US ou es_ES)
+	
+}'
+200 OK
+Example Response
+Body
+Headers (10)
+View More
+json
+{
+    "courses": [
+        {
+            "id": 48991,					// Código de identificação do treinamento
+            "version": 2,					// Versão do treinamento
+            "title": {						// Título do treinamento
+                "id": 785422,
+                "pt_BR": "All content test"
+            },
+            "description": {				// Descrição do treinamento
+                "id": 1343665,
+                "pt_BR": "<p>Teste</p>\n"
+            },
+            "syllabus": {					// Resumo do treinamento
+                "id": 1343668,
+                "pt_BR": "<p>Teste</p>\n"
+            },
+            "accountOwner": {				// Identificação do portal proprietário do treinamento
+                "id": 5
+            },
+            "userOwner": {					// Usuário que criou o treinamento
+                "@class": "User",
+                "id": 8,
+                "name": "Philip",
+                "lastname": "Stefan",
+                "email": "philip@lectortec.com.br",
+                "friendlyUrl": "philip.haertel",
+                "status": "ACTIVE",
+                "emailConfirmed": false,
+                "firstname": "Philip"
+            },
+            "authors": [					// Lista de autores do treinamento
+                {
+                    "@class": "User",
+                    "id": 304129,
+                    "name": "Guilherme",
+                    "lastname": "Fernandes Raposo de Barros",
+                    "email": "guilherme@lectortec.com.br",
+                    "friendlyUrl": "guilherme.fernandesraposodebarros",
+                    "status": "ACTIVE",
+                    "emailConfirmed": false,
+                    "firstname": "Guilherme"
+                }
+            ],
+            "publishDate": 1584068400000,	// Data de publicação do treinamento expressa em milissegundos desde 01/01/1970 UTC
+            "length": 14400000,				// Carga horária do treinamento
+            "editPermission": true,			// Flag que determina se o usuário possui permissão para editar o treinamento
+            "deletePermission": true,		// Flag que determina se o usuário possui permissão para excluir o treinamento
+            "viewed": true,					// Flag que determina se o usuário já visualizou este treinamento antes
+            "subscriptionStatus": "NOT_SUBSCRIBED",		// Situação da inscrição do usuário neste treinamento
+            "progress": 0,					// Percentual do progresso do usuário neste treinamento
+            "tags": [],						// Lista de tags associadas ao treinamento
+            "language": "pt_BR",			// Idioma do treinamento
+            "minimumGradeToApprove": 15,	// Percentual de aproveitamento mínimo para aprovação neste treinamento
+            "certificate": {				// Certificado associado a este treinamento
+                "id": 19712,
+                "name": {
+                    "id": 693992,
+                    "pt_BR": "Certificate"
+                },
+                "accountId": 5,
+                "dualPage": false
+            },
+            "maxPrice": 0,
+            "minPrice": 0
+        }
+    ],
+    "total": 1	// Quantidade total de treinamentos que seriam obtidos se não houvesse paginação
+}
+POST
+Criar novo treinamento
+https://hml.lector.live/lector-web-service/courses/saveCourse/{portalID}?useVersion=false
+Substituições:
+
+{portalID}: ID do portal.
+{usuarioID}: ID do usuário autor do treinamento.
+HEADERS
+content-type
+application/json;charset=UTF-8
+
+cookie
+rememberMe={tokenObtidoNoLogin}
+
+Substitua pelo rememberMe obtido no login
+
+PARAMS
+useVersion
+false
+
+Body
+raw
+View More
+{
+    "course": {
+        "useVersioning": false,                    // Usar versionamento
+        "title": {                                 // Objeto multi-idioma
+            "pt_BR": "Exemplo de título",
+            "en_US": "Title example",
+            "es_ES": "Ejemplo de título"
+        },
+        "description": {                           // Objeto multi-idioma
+            "pt_BR": "<div style=\"text-align: center;\">Exemplo de <strong>descrição</strong></div>"
+        },
+        "syllabus": {                              // Objeto multi-idioma
+            "pt_BR": "<div style=\"text-align: center;\">Exemplo de <em>resumo</em></div>"
+        },
+        "workload": {                              // Carga horária
+            "hours": 2,
+            "minutes": 30
+        },
+        "authors": [],
+        "resources": [],
+        "classes": [],
+        "requiredContentMinimumProgress": 100,     // Progresso mínimo no conteúdo atual para permitir o próximo conteúdo
+        "accountOwner": {
+            "id": {portalID}                       // ID do portal
+        },
+        "minimumGradeToApprove": 70,               // Nota mínima para aprovação
+        "language": "pt_BR",                       // Idioma padrão
+        "observations": "Exemplo de observações",
+        "publishDate": 1622487780576,              // Data de publicação - pode ser obtida em javascript com (new Date()).getTime()
+        "userOwner": {
+            "id": {usuarioID}                      // ID do usuário autor do treinamento
+        },
+        "length": 9000000                          // Carga horária em milisegundos
+    },
+    "classes": [],
+    "categories": []
+}
+Example Request
+Criar novo treinamento
+View More
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/courses/saveCourse/{portalID}?useVersion=false' \
+--header 'content-type: application/json;charset=UTF-8' \
+--header 'cookie: rememberMe={tokenObtidoNoLogin}' \
+--data '{
+    "course": {
+        "useVersioning": false,                    // Usar versionamento
+        "title": {                                 // Objeto multi-idioma
+            "pt_BR": "Exemplo de título",
+            "en_US": "Title example",
+            "es_ES": "Ejemplo de título"
+        },
+        "description": {                           // Objeto multi-idioma
+            "pt_BR": "<div style=\"text-align: center;\">Exemplo de <strong>descrição</strong></div>"
+        },
+        "syllabus": {                              // Objeto multi-idioma
+            "pt_BR": "<div style=\"text-align: center;\">Exemplo de <em>resumo</em></div>"
+        },
+        "workload": {                              // Carga horária
+            "hours": 2,
+            "minutes": 30
+        },
+        "authors": [],
+        "resources": [],
+        "classes": [],
+        "requiredContentMinimumProgress": 100,     // Progresso mínimo no conteúdo atual para permitir o próximo conteúdo
+        "accountOwner": {
+            "id": {portalID}                       // ID do portal
+        },
+        "minimumGradeToApprove": 70,               // Nota mínima para aprovação
+        "language": "pt_BR",                       // Idioma padrão
+        "observations": "Exemplo de observações",
+        "publishDate": 1622487780576,              // Data de publicação - pode ser obtida em javascript com (new Date()).getTime()
+        "userOwner": {
+            "id": {usuarioID}                      // ID do usuário autor do treinamento
+        },
+        "length": 9000000                          // Carga horária em milisegundos
+    },
+    "classes": [],
+    "categories": []
+}'
+Example Response
+Body
+Headers (0)
+No response body
+This request doesn't return any response body
+GET
+Listagem de turmas de um treinamento
+https://hml.lector.live/lector-web-service/courses/classes/{courseId}/{accountId}
+Obtenção da lista de turmas de um treinamento
+
+AUTHORIZATION
+Bearer Token
+Token
+<token>
+
+HEADERS
+Example Request
+Listagem de turmas de um treinamento
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/courses/classes/{courseId}/{accountId}'
+200 OK
+Example Response
+Body
+Headers (10)
+View More
+json
+[
+    {
+        "id": 77209,									// Código de identificação da turma
+        "name": {										// Nome da turma
+            "id": 698107,
+            "pt_BR": "Turma de teste"
+        },
+        "purchaseInfo": {								// Informações referentes ao modo de comercialização das inscrições na turma
+            "id": 161497,
+            "price": 0,
+            "free": true
+        },
+        "requireApproval": true,						// Flag que determina se a inscrição na turma requer aprovação de um gestor
+        "concurrentSubscriptionsAllowed": false,		// Flag que determina se as inscrições neste turma podem ser feitas por meio de pacotes de matrículas concorrentes
+        "waitingQueueEnabled": false,					// Flag que determina se existe uma fila de espera para inscrições nesta turma
+        "tutors": [],									// Lista de tutores da turma
+        "resourcesMap": {},								// Lista de recursos da turma
+        "subscriptionStatus": "NOT_SUBSCRIBED",			// Situação da inscrição do usuário na turma
+        "purchaseEnabled": true,						// Flag que determina se é possível adquirir uma inscrição para esta turma
+        "subscriptionBlocked": false,					// Flag que determina se a inscrição nesta turma está bloqueada
+        "free": true									// Flag que informa se a inscrição é gratuita.
+    }
+]
+GET
+Obtenção das categorias de treinamentos
+https://hml.lector.live/lector-web-service/categories/courseCategories/{accountId}?preferredLanguage=pt_BR
+Obtém a árvore de categorias de treinamentos de um portal
+
+AUTHORIZATION
+Bearer Token
+Token
+<token>
+
+PARAMS
+preferredLanguage
+pt_BR
+
+Example Request
+Obtenção das categorias de treinamentos
+View More
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/categories/courseCategories/{accountId}?preferredLanguage=pt_BR'
+200 OK
+Example Response
+Body
+Headers (11)
+View More
+json
+[											// Lista de categorias
+    {
+        "entity": {							// Categoria
+            "id": 0,						// Código de identificação da categoria - A categoria raiz de todo portal se chama "Todos" e possui id = 0
+            "name": {						// Nome da categoria
+                "id": 0,
+                "pt_BR": "Todos",
+                "en_US": "All",
+                "es_ES": "Todos"
+            },
+            "newItens": 0,
+            "createPermitted": {
+                "permitted": true
+            },
+            "editAccessPermitted": {
+                "permitted": true
+            }
+        },
+        "children": [						// Lista de sub-categorias
+            {
+                "entity": {
+                    "id": 51041,
+                    "name": {
+                        "id": 748463,
+                        "pt_BR": "Categoria 1"
+                    },
+                    "newItens": 0,
+                    "createPermitted": {
+                        "permitted": true
+                    },
+                    "editAccessPermitted": {
+                        "permitted": true
+                    }
+                },
+                "children": []
+            },
+            {
+                "entity": {
+                    "id": 48371,
+                    "name": {
+                        "id": 659318,
+                        "pt_BR": "Categoria 2"
+                    },
+                    "newItens": 0,
+                    "createPermitted": {
+                        "permitted": true
+                    },
+                    "editAccessPermitted": {
+                        "permitted": true
+                    }
+                },
+                "children": []
+            },
+            {
+                "entity": {
+                    "id": 51565,
+                    "name": {
+                        "id": 753769,
+                        "pt_BR": "Categoria 3"
+                    },
+                    "newItens": 0,
+                    "createPermitted": {
+                        "permitted": true
+                    },
+                    "editAccessPermitted": {
+                        "permitted": true
+                    }
+                },
+                "children": []
+            }
+        ]
+    }
+]
+GET
+Gerar certificado PDF
+https://hml.lector.live/lector-web-service/certificates/drawCourseCertificatePDF/{nomeCustomizavelDoArquivo}?classSubscriptionHistoryId=1643&preferredLanguage=pt_BR
+Gera o certificado do aluno em formato PDF.
+
+Substitua {nomeCustomizavelDoArquivo} pelo nome que deve aparecer por padrão ao salvar o arquivo PDF gerado.
+
+PARAMS
+classSubscriptionHistoryId
+1643
+
+Código de identificação da inscrição no treinamento
+
+preferredLanguage
+pt_BR
+
+Idioma preferido (pt_BR, en_US, es_ES)
+
+Example Request
+Gerar certificado PDF
+View More
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/certificates/drawCourseCertificatePDF/{nomeCustomizavelDoArquivo}?classSubscriptionHistoryId=1643&preferredLanguage=pt_BR'
+200 OK
+Example Response
+Body
+Headers (6)
+No response body
+This request doesn't return any response body
+POST
+Buscar histórico dos cursos
+https://hml.lector.live/lector-web-service/report/myCoursesHistory?userId=8&categoryId=14
+Busca histórico do aluno.
+
+AUTHORIZATION
+Bearer Token
+Token
+<token>
+
+PARAMS
+userId
+8
+
+ID do usuário (NÃO É OBRIGATÓRIO), caso não tenha um ID, retornará histórico do usuário logado
+
+categoryId
+14
+
+ID da categoria do curso (NÃO É OBRIGATÓRIO)
+
+Body
+urlencoded
+accountId
+1
+
+Código de identificação do portal
+
+start
+0
+
+Valor em que começa o primeiro registro (NÃO É OBRIGATÓRIO)
+
+length
+10
+
+Limite do tamanho da lista retornada (NÃO É OBRIGATÓRIO)
+
+preferredLanguage
+pt_BR
+
+Idioma, pode ser "pt_BR", "en_US" ou "es_ES"
+
+columns[0][data]
+name
+
+O valor em column[x][data] referencia uma coluna
+
+columns[0][name]
+null
+
+Valor fixo: null
+
+columns[0][searchable]
+true
+
+Indica se a coluna pode utilizar busca
+
+columns[0][orderable]
+true
+
+Indica se a coluna pode ser ordenada ou não
+
+columns[0][search][value]
+test user
+
+Busca por valor na coluna
+
+columns[0][search][regex]
+false
+
+Indica se utiliza busca usando regex na coluna
+
+order[0][column]
+0
+
+Indica que a primeira ordem [0] será da coluna 0
+
+order[0][dir]
+desc
+
+Indica que a primeira ordem [0] será "DESC" decrescente, também podendo ser "ASC" crescente
+
+Example Request
+Buscar histórico dos cursos
+View More
+curl
+curl --location 'https://hml.lector.live/lector-web-service/report/myCoursesHistory' \
+--data-urlencode 'accountId=5' \
+--data-urlencode 'start=0' \
+--data-urlencode 'length=10' \
+--data-urlencode 'preferredLanguage=pt_BR' \
+--data-urlencode 'columns%5B0%5D%5Bdata%5D=progress' \
+--data-urlencode 'columns%5B0%5D%5Bname%5D=' \
+--data-urlencode 'columns%5B0%5D%5Bsearchable%5D=true' \
+--data-urlencode 'columns%5B0%5D%5Borderable%5D=true' \
+--data-urlencode 'columns%5B0%5D%5Bsearch%5D%5Bvalue%5D=' \
+--data-urlencode 'columns%5B0%5D%5Bsearch%5D%5Bregex%5D=false' \
+--data-urlencode 'order%5B0%5D%5Bcolumn%5D=0' \
+--data-urlencode 'order%5B0%5D%5Bdir%5D=desc'
+200 OK
+Example Response
+Body
+Headers (13)
+View More
+json
+{
+    "recordsTotal": 39,
+    "itemsPerPage": 10,
+    "recordsFiltered": 39,
+    "currentPage": 0,
+    "start": 0,
+    "length": 10,
+    "data": [
+        {
+            "inProgress": 1,                                        // indica se o curso está em progresso (0 false || 1 true)
+            "subscriptionCancellationEnd": null,                    // data de término do cancelamento da matrícula (null = indeterminado) 
+            "certificateId": null,                                  // id do certificado caso tenha
+            "description": "<div>\n<p>Teste</p>\n</div>\n",         // descrição do curso
+            "language": "pt_BR",                                    // idioma do curso
+            "expiresDate": null,                                    // data de expiração da matrícula
+            "type": null,
+            "finishedExpiresDate": null,
+            "result": null,
+            "subscriptionDate": 1588608738000,                      // data e hora em que o usuário foi inscrito no treinamento expressa em milissegundos desde 01/01/1970 UTC
+            "classId": 88625,                                       // id da turma
+            "courseVersion": 3,                                     // versão do curso
+            "categoriesNames": null,
+            "courseId": 51109,                                      // id do curso
+            "unsubscriptionDate": null,                             // data e hora em que o usuário concluiu o treinamento expressa em milissegundos desde 01/01/1970 UTC
+            "length": 23400,
+            "certificateAccessStatus": "NORMAL",                    // situação do acesso ao certificado. Pode ser NORMAL (usuário receberá o certificado quando for aprovado), BLOCKED (usuário não receberá o certificado) e GRANTED 	
+            "lastAccessDate": 1610153602000,                        // data do último acesso em milisegundos
+            "grade": null,                                          // percentual de aproveitamento do usuário
+            "subscriptionCancellationStart": null,                  // data de início do cancelamento da matrícula (null = indeterminado)
+            "name": "test",                                         // nome do curso
+            "progress": 100,                                        // indica o progresso da inscrição
+            "subscriptionId": 824559,                               // id da inscrição
+            "startDate": null,
+            "status": "IN_PROGRESS"                                 // situação da inscrição
+        }
+    ]
+}
+GET
+Gerar token de autenticação
+https://hml.lector.live/lector-web-service/security/{portalID}/getAuthorizationToken/{userId}
+Obtém um token de autenticação para o usuário especificado.
+
+O token pode ser utilizado para gerar um link que, quando acessado pelo aluno, direciona para uma página autenticada.
+
+Exemplo de link para treinamento:
+
+Plain Text
+https://beta.lectorlive.com/lector/courses/{courseID}/token/{token}
+HEADERS
+Cookie
+rememberMe={tokenObtidoNoLogin}
+
+Example Request
+Gerar token de autenticação
+View More
+curl
+curl --location -g 'https://hml.lector.live/lector-web-service/security/{portalID}/getAuthorizationToken/{userId}' \
+--header 'Cookie: rememberMe={tokenObtidoNoLogin}'
+Example Response
+Body
+Headers (0)
+No response body
+This request doesn't return any response body
